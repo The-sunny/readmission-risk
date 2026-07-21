@@ -26,9 +26,12 @@ CREATE OR REPLACE STAGE source_data_stage
     FILE_FORMAT = csv_source_format;
 
 -- 3. Upload the local CSVs to the stage (overwrite so reruns pick up edits).
-PUT file://source_data/tbl_common_encounters.csv @source_data_stage AUTO_COMPRESS=TRUE OVERWRITE=TRUE;
-PUT file://source_data/tbl_common_diagnoses.csv  @source_data_stage AUTO_COMPRESS=TRUE OVERWRITE=TRUE;
-PUT file://source_data/tbl_common_vitals.csv     @source_data_stage AUTO_COMPRESS=TRUE OVERWRITE=TRUE;
+--    Paths are quoted since PUT requires it whenever the path contains
+--    spaces (e.g. a repo checked out under a directory like
+--    "Personal Projects").
+PUT 'file://source_data/tbl_common_encounters.csv' @source_data_stage AUTO_COMPRESS=TRUE OVERWRITE=TRUE;
+PUT 'file://source_data/tbl_common_diagnoses.csv'  @source_data_stage AUTO_COMPRESS=TRUE OVERWRITE=TRUE;
+PUT 'file://source_data/tbl_common_vitals.csv'     @source_data_stage AUTO_COMPRESS=TRUE OVERWRITE=TRUE;
 
 -- 4. Load each source table. Truncate first so this script is safely
 --    re-runnable while iterating on the sample data (these are our own
