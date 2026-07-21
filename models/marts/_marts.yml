@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: tbl_common_patient_readmission_risk
+    description: >
+      One row per index encounter (non-Elective), with the 30-day
+      readmission flag and supporting diagnosis/vitals features attached.
+      Denormalized, analyst-ready gold-layer table.
+    columns:
+      - name: encounter_id
+        description: Index encounter identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: source('raw', 'tbl_common_encounters')
+                field: encounter_id
+      - name: patient_key
+        description: Patient identifier.
+        tests:
+          - not_null
