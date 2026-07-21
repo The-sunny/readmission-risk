@@ -1,0 +1,18 @@
+# Credentials / secrets — never commit
+profiles.yml
+soda/configuration.yml
+
+# Python virtualenvs
+.venv/
+.venv-dbt/
+.venv-soda/
+__pycache__/
+*.pyc
+
+# dbt artifacts
+target/
+dbt_packages/
+logs/
+
+# OS
+.DS_Store
