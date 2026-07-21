@@ -1,0 +1,23 @@
+# Template only. Copy to configuration.yml (git-ignored) and fill in your
+# own Snowflake trial credentials. Never commit the real configuration.yml.
+#
+#   cp soda/configuration.yml.example soda/configuration.yml
+#   soda scan -d readmission_risk -c soda/configuration.yml soda/checks.yml
+
+data_source readmission_risk:
+  type: snowflake
+  username: "<username>"
+  password: "<password>"
+  account: "<account_identifier>"
+  database: "READMISSION_RISK"
+  warehouse: "READMISSION_WH"
+  schema: "PUBLIC"
+  role: "<role>"
+
+# Soda Cloud is not used in this build (local/CLI only -- see BUILD_SPEC.md
+# section 2 and 3). To add it later without restructuring, uncomment and
+# fill in below -- no other changes needed.
+#
+# soda_cloud:
+#   api_key_id: "<api_key_id>"
+#   api_key_secret: "<api_key_secret>"

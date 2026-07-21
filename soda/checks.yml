@@ -1,0 +1,20 @@
+checks for tbl_common_patient_readmission_risk:
+  # Freshness: _loaded_at must be within the last 24 hours.
+  - freshness(_loaded_at) < 24h
+
+  # Not null: patient_key and encounter_id must never be NULL.
+  - missing_count(patient_key) = 0
+  - missing_count(encounter_id) = 0
+
+  # Numeric sanity: NULLs are allowed (the no-vitals edge case, section 7),
+  # but any present value must fall in a clinically plausible range.
+  - invalid_count(avg_heart_rate_final_24h) = 0:
+      valid min: 30
+      valid max: 250
+  - invalid_count(min_spo2_final_24h) = 0:
+      valid min: 50
+      valid max: 100
+
+  # Referential integrity: every encounter_id in the mart exists in the
+  # raw source encounters table.
+  - values in (encounter_id) must exist in tbl_common_encounters (encounter_id)
