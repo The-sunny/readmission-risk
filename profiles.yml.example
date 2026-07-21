@@ -1,0 +1,19 @@
+# Template only. Copy to profiles.yml (git-ignored) and fill in your own
+# Snowflake trial credentials. Never commit the real profiles.yml.
+#
+#   cp profiles.yml.example profiles.yml
+#   dbt debug --profiles-dir .
+
+readmission_risk:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "<account_identifier>"      # e.g. xy12345.us-east-1
+      user: "<username>"
+      password: "<password>"               # or use a key-pair/authenticator instead
+      role: "<role>"
+      database: "<database>"
+      warehouse: "<warehouse>"
+      schema: "<schema>"
+      threads: 4

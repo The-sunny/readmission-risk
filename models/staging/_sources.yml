@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: raw
+    database: "{{ target.database }}"
+    schema: "{{ target.schema }}"
+    description: >
+      Raw source tables, hand-crafted and loaded via stage + COPY INTO
+      (see setup/01_ddl_source_tables.sql and setup/02_load_source_data.sql).
+      Not dbt seeds.
+    tables:
+      - name: tbl_common_encounters
+        description: One row per encounter.
+      - name: tbl_common_diagnoses
+        description: One row per diagnosis per encounter.
+      - name: tbl_common_vitals
+        description: One row per vitals reading (high volume).
