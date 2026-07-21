@@ -1,0 +1,11 @@
+encounter_id,patient_key,encounter_type,admission_type,admission_date,discharge_date
+E001,P001,Inpatient,Emergency,2024-01-01 08:00:00,2024-01-05 10:00:00
+E002,P001,Inpatient,Emergency,2024-01-15 09:00:00,2024-01-18 11:00:00
+E003,P001,Outpatient,Urgent,2024-01-25 07:30:00,2024-01-25 15:00:00
+E004,P002,Inpatient,Emergency,2024-02-01 08:00:00,2024-02-05 12:00:00
+E005,P002,Outpatient,Urgent,2024-03-10 09:00:00,2024-03-10 14:00:00
+E006,P003,Inpatient,Elective,2024-01-10 08:00:00,2024-01-12 10:00:00
+E007,P004,Inpatient,Emergency,2024-01-01 06:00:00,
+E008,P004,Inpatient,Urgent,2024-01-20 09:00:00,2024-01-22 10:00:00
+E009,P005,Inpatient,Emergency,2024-01-01 07:00:00,
+E010,P005,Outpatient,Urgent,2024-01-15 08:00:00,2024-01-16 09:00:00
