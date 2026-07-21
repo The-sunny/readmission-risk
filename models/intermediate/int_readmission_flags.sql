@@ -1,10 +1,9 @@
--- Self-joins index encounters to later encounters of the same patient to
--- find qualifying 30-day returns, then collapses to one row per index
+-- Self-joins index encounters to later index encounters of the same patient
+-- to find qualifying 30-day returns, then collapses to one row per index
 -- encounter (BUILD_SPEC.md section 7, decision 2: no fan-out, ever).
 --
--- The return side is all encounters (not just the index set) -- the index
--- filter (excluding Elective) only defines what can be flagged, not what
--- counts as a return visit.
+-- Both sides of the self-join draw from int_index_encounters, so Elective
+-- admissions are excluded as return visits too, not just as index encounters.
 --
 -- Standard path (index discharge_date NOT NULL): return admission_date is
 -- after the index discharge_date and within 30 days of it.
@@ -19,11 +18,6 @@ with index_encounters as (
     from {{ ref('int_index_encounters') }}
 ),
 
-all_encounters as (
-    select encounter_id, patient_key, admission_date, discharge_date
-    from {{ ref('stg_encounters') }}
-),
-
 dx_sets as (
     select encounter_id, diagnosis_codes
     from {{ ref('int_dx_counts') }}
@@ -34,7 +28,7 @@ standard_path as (
         idx.encounter_id as index_encounter_id,
         datediff('day', idx.discharge_date, ret.admission_date) as days_to_readmission
     from index_encounters idx
-    inner join all_encounters ret
+    inner join index_encounters ret
         on ret.patient_key = idx.patient_key
         and ret.encounter_id <> idx.encounter_id
     where idx.discharge_date is not null
@@ -47,7 +41,7 @@ null_discharge_path as (
         idx.encounter_id as index_encounter_id,
         datediff('day', idx.admission_date, ret.admission_date) as days_to_readmission
     from index_encounters idx
-    inner join all_encounters ret
+    inner join index_encounters ret
         on ret.patient_key = idx.patient_key
         and ret.encounter_id <> idx.encounter_id
     left join dx_sets idx_dx
